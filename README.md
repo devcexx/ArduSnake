@@ -7,12 +7,14 @@ Para correr este Sketch, es necesario disponer de una placa Arduino que posea, a
 El programa incluye dos modos de funcionamiento, que puede ser cambiado por el usuario antes de subir el Sketch a la placa: control por joystick o por botones de dirección. Más abajo se mostrará la manera de alternar entre estos dos modos.
 
 El hardware requerido para hacer funcionar el Sketch variará en función del modo preferido. Así, si se desea controlar la placa con un joystick, el hardware requerido será el siguiente:
+
 - Una pantalla TFT, compatible con la librería TFT estándar de Arduino, a ser posible de 160x128 px de resolución mínima.
 - Un joystick de dos ejes.
 - Un pulsador de membrana.
 - Una resistencia de 10kΩ.
 
 Si por el contrario se prefiere el uso de botones de dirección, éste será el hardware requerido:
+
 - Una pantalla TFT, compatible con la librería TFT estándar de Arduino, a ser posible de 160x128 px de resolución mínima.
 - Cinco pulsadores de membrana.
 - Cinco resistencias de 10kΩ.
