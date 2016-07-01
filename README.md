@@ -7,17 +7,18 @@ Para correr este Sketch, es necesario disponer de una placa Arduino que posea, a
 El programa incluye dos modos de funcionamiento, que puede ser cambiado por el usuario antes de subir el Sketch a la placa: control por joystick o por botones de dirección. Más abajo se mostrará la manera de alternar entre estos dos modos.
 
 El hardware requerido para hacer funcionar el Sketch variará en función del modo preferido. Así, si se desea controlar la placa con un joystick, el hardware requerido será el siguiente:
-  - Una pantalla TFT, compatible con la librería TFT estándar de Arduino, a ser posible de 160x128 px de resolución mínima.
-  - Un joystick de dos ejes.
-  - Un pulsador de membrana.
-  - Una resistencia de 10kΩ.
+- Una pantalla TFT, compatible con la librería TFT estándar de Arduino, a ser posible de 160x128 px de resolución mínima.
+- Un joystick de dos ejes.
+- Un pulsador de membrana.
+- Una resistencia de 10kΩ.
 
 Si por el contrario se prefiere el uso de botones de dirección, éste será el hardware requerido:
-  - Una pantalla TFT, compatible con la librería TFT estándar de Arduino, a ser posible de 160x128 px de resolución mínima.
-  - Cinco pulsadores de membrana.
-  - Cinco resistencias de 10kΩ.
+- Una pantalla TFT, compatible con la librería TFT estándar de Arduino, a ser posible de 160x128 px de resolución mínima.
+- Cinco pulsadores de membrana.
+- Cinco resistencias de 10kΩ.
 
-Podrá encontrar ejemplos de montaje del hardware en la sección de descargas de este repositorio: <https://bitbucket.org/devcexx/ardusnake/downloads>\
+Podrá encontrar ejemplos de montaje del hardware en la sección de descargas de este repositorio: <https://bitbucket.org/devcexx/ardusnake/downloads>
+
 Estos efectivamente solo son ejemplos de montaje: el usuario puede modificar los pines de los botones y/o joystick a su gusto. No obstante, las conexiones de la pantalla suelen variar solo en función de la placa que estemos usando. Para más información acerca de cómo conectar una pantalla TFT a la placa, léase esta guía: <https://www.arduino.cc/en/Guide/TFTtoBoards>
 
 ### Preparación del Software
@@ -96,11 +97,16 @@ Los parámetros que se deben atender para configurar la pantalla dentro del prog
 #define TFT_RST 8  
 ```
 
-```TFT_WIDTH```: El ancho, en píxeles de la pantalla.\
-```TFT_HEIGHT```: El alto, en píxeles de la pantalla.\
-```TFT_LCD```: El pin de la placa en donde se encuentra conectado el pin "LCD CS" de la pantalla.\
-```TFT_DC```: El pin de la placa en donde se encuentra conectado el pin "D/C" de la pantalla.\
-```TFT_RST```: El pin de la placa en donde se encuentra conectado el pin "RESET" de la pantalla.\
+```TFT_WIDTH```: El ancho, en píxeles de la pantalla.
+
+```TFT_HEIGHT```: El alto, en píxeles de la pantalla.
+
+```TFT_LCD```: El pin de la placa en donde se encuentra conectado el pin "LCD CS" de la pantalla.
+
+```TFT_DC```: El pin de la placa en donde se encuentra conectado el pin "D/C" de la pantalla.
+
+```TFT_RST```: El pin de la placa en donde se encuentra conectado el pin "RESET" de la pantalla.
+
 
 ##### Otros
 Algunos otros parámetros que pueden ser de interés y que pueden ser modificados son:
