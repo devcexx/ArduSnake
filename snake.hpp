@@ -35,8 +35,27 @@
  *
  * Si por otra parte se prefieren utilizar cuatro botones conectados
  * a la misma, la línea de abajo deberá de ser comentada.
+ *
  */
 #define USE_JOYSTICK
+
+/*
+ * NO MODIFICAR ESTA ENTRADA - Si este programa correrá en una Arduino Esplora,
+ * el joystick debe de estar habilitado
+ */
+#ifdef ARDUINO_AVR_ESPLORA
+#define USE_JOYSTICK
+#endif
+
+/*
+ * NO MODIFICAR ESTA ENTRADA - Si el programa detecta que tiene está en una placa
+ * diferente a la Arduino Esplora, y tiene el joystick habilitado, significa que
+ * el programa utiliza un joystick externo, reconfigurando automáticamente el programa
+ * para adaptarse a ello.
+ */
+#if defined(USE_JOYSTICK) && !defined(ARDUINO_AVR_ESPLORA)
+#define EXTERN_JOYSTICK
+#endif
 
 /*
  * Si está definido, la comunicación serial se abrirá tras el inicio
@@ -64,27 +83,37 @@
 
 //Controles
 #ifdef USE_JOYSTICK
-//Controles - Joystick
+//Controles - Joystick (no aplicable si el sketch corre en una Arduino Esplora)
+#ifndef ARDUINO_AVR_ESPLORA
 //El pin de entrada de los valores del eje X
 #define X_AXIS_INPUT A1
 //El pin de entrada de los valores del eje Y
 #define Y_AXIS_INPUT A0
+#endif
 
 /*
  * La variación de los valores para cuando el joystick se mueve hacia
  * las diferentes direcciones El valor -1 indica que, hacia esa dirección,
  * los valores de entrada del joystick tienden a 0, mientras que 1
  * indica que tienden a 1023.
+ *
+ * En Arduino Esplora, estos valores, por lo general suelen estar definidos
+ * a -1.
  */
-#define X_AXIS_LEFT 1
-#define Y_AXIS_UP 1
+#define X_AXIS_LEFT -1
+#define Y_AXIS_UP -1
 
 /*
  * Los centros de ambos ejes (esto después puede ser modificado por el
- * usuario durante el juego en el menú de Calibrar joystick)
+ * usuario durante el juego en el menú de Calibrar joystick).
+ *
+ * En un joystick externo, los centros pueden estar situados en (512, 512) o (0,0) por lo general.
+ * En una Arduino Esplora, la ubicación de los centros está en el (0,0). En una Esplora, es importante
+ * definir correctamente estos valores, pues, debido al limitado tamaño de la memoria de la Esplora,
+ * la calibración estará deshabilitada.
  */
-#define X_AXIS_CENTER 512
-#define Y_AXIS_CENTER 512
+#define X_AXIS_CENTER 0
+#define Y_AXIS_CENTER 0
 
 /*
  * Los valores máximos que puede tomar cada uno de los valores (a menos
@@ -105,38 +134,50 @@
 #define JOY_DETECT_THRESHOLD 300
 
 #else
-
-//Controles - botones de dirección
+#ifndef ARDUINO_AVR_ESPLORA
+//Controles - botones de dirección (no aplicable si el sketch corre en una Arduino Esplora)
 #define BUTTON_LEFT_PIN 3
 #define BUTTON_RIGHT_PIN 4
 #define BUTTON_UP_PIN 5
 #define BUTTON_DOWN_PIN 6
-
+#endif
 #endif
 
-//Controles - Botón de start
+//Controles - Botón de start (no aplicable si el sketch corre en una Arduino Esplora)
+#ifndef ARDUINO_AVR_ESPLORA
 #define BUTTON_START_PIN 2
+#endif
 
 /*
  * Pantalla
  * Estos son los valores de configuración de la pantalla. Para que una pantalla funcione
  * con este Sketch, es necesario que sea compatible con la librería TFT de Arduino.
  * Además, se recomienda que su resolución no sea menor a 160x128 px
+ *
+ * (no aplicable si el sketch corre en una Arduino Esplora, se configura automáticamente)
  */
+#ifndef ARDUINO_AVR_ESPLORA
 #define TFT_WIDTH 160     //Ancho
 #define TFT_HEIGHT 128    //Alto
 #define TFT_LCD 10    	  //Pin LCD
 #define TFT_DC 9          //Pin D/C
 #define TFT_RST 8         //Pin RESET
+#endif
 
 //EEPROM
 //El desplazamiento desde el inicio de la EEPROM donde se comenzarán a guardar los datos del juego
 #define EEPROM_SAVE_OFFSET 0
 
 //Random
-//Un pin analógico desconectado, cuyo ruido se utilizará para inicializar el generador
-//de números aleatorios.
+/*Un pin analógico desconectado, cuyo ruido se utilizará para inicializar el generador
+ * de números aleatorios.
+ *
+ * Si el Sketch se ejecuta en una Arduino Esplora, el programa obtendrá una semilla aleatoria a partir
+ * del ruido de los sensores de la placa.
+*/
+#ifndef ARDUINO_AVR_ESPLORA
 #define RANDOM_ANALOG_PIN A2
+#endif
 
 //Colores
 #define RED {255,0,0}
@@ -175,6 +216,9 @@
 #include <TFT.h>
 #include <EEPROM.h>
 #include <avr/pgmspace.h>
+#ifdef ARDUINO_AVR_ESPLORA
+#include <Esplora.h>
+#endif
 
 /*
  * Aquí se declaran todas las strings del programa. Todas ellas se declaran
@@ -286,7 +330,7 @@ public:
 	Input* input;
 	Context* context;
 
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 	void calibrate(int centerX, int centerY);
 #endif
 	void notifyScore(unsigned long score);

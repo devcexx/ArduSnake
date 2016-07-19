@@ -132,7 +132,7 @@ public:
  * permite al usuario calibrar el centro del joystick.
  */
 
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 class CalibrationScreen : public ListScreen {
 public:
 	CalibrationScreen(Context* ctx);

@@ -117,11 +117,16 @@ void eeprom_write_long(int offset, long value){
 }
 
 void Game::init(){
+#ifdef ARDUINO_AVR_ESPLORA
+	randomSeed(Esplora.readAccelerometer(X_AXIS) ^ Esplora.readAccelerometer(Y_AXIS) ^ Esplora.readAccelerometer(Z_AXIS) ^ Esplora.readLightSensor() ^ Esplora.readJoystickSwitch());
+	context = new Context(this, &EsploraTFT, EsploraTFT.width(), EsploraTFT.height());
+#else
 	randomSeed(analogRead(RANDOM_ANALOG_PIN));
-
 	context = new Context(this, new TFT(TFT_LCD, TFT_DC, TFT_RST), TFT_WIDTH, TFT_HEIGHT);
+#endif
 	input = new Input();
 
+#ifndef ARDUINO_AVR_ESPLORA
 #ifdef USE_JOYSTICK
 	pinMode(X_AXIS_INPUT, INPUT);
 	pinMode(Y_AXIS_INPUT, INPUT);
@@ -132,13 +137,14 @@ void Game::init(){
 	pinMode(BUTTON_DOWN_PIN, INPUT);
 #endif
 	pinMode(BUTTON_START_PIN, INPUT);
+#endif
 
 #if defined(BEGIN_SERIAL) || defined(DEBUG_MEMORY)
 	Serial.begin(SERIAL_BAUD_RATE);
 #endif
 
 	//Cargar datos de la EEPROM
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 	if (EEPROM.read(EEPROM_SAVE_OFFSET) == 1) { //Los datos de calibración están presentes en la EEPROM
 		joyCenterX = eeprom_read_int(EEPROM_SAVE_OFFSET + 1);
 		joyCenterY =  eeprom_read_int(EEPROM_SAVE_OFFSET + 3);
@@ -153,7 +159,7 @@ void Game::init(){
 	initScreen(new SplashScreen(context));
 }
 
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 void Game::calibrate(int centerX, int centerY){
 	joyCenterX = centerX;
 	joyCenterY = centerY;
@@ -202,7 +208,12 @@ void Game::tick(){
 
 
 Input* Game::readInput() {
+#ifdef ARDUINO_AVR_ESPLORA
+	bool btnstate = (Esplora.readJoystickButton() & Esplora.readButton(SWITCH_LEFT) & Esplora.readButton(SWITCH_RIGHT) & Esplora.readButton(SWITCH_UP) & Esplora.readButton(SWITCH_DOWN)) == LOW;
+#else
 	bool btnstate = digitalRead(BUTTON_START_PIN);
+#endif
+
 	input->currentStart = btnstate;
 	if (btnstate) { //Si el botón está presionado
 		if (input->prevstart) {
@@ -220,8 +231,13 @@ Input* Game::readInput() {
 	}
 
 #ifdef USE_JOYSTICK
+#ifdef ARDUINO_AVR_ESPLORA
+	input->rawX = Esplora.readJoystickX();
+	input->rawY = Esplora.readJoystickY();
+#else
 	input->rawX = analogRead(X_AXIS_INPUT);
 	input->rawY = analogRead(Y_AXIS_INPUT);
+#endif
 	input->x = (input->rawX - joyCenterX) * X_AXIS_LEFT;
 	input->y = (input->rawY - joyCenterY) * Y_AXIS_UP;
 

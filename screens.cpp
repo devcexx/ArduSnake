@@ -176,7 +176,7 @@ MainMenuScreen::MainMenuScreen(Context* ctx) : ListScreen(ctx) {}
 void MainMenuScreen::onInit() {
 	//Como el número de botones disminuye si el joystick está deshabilitado,
 	//cambiamos el tamaño del título en función de ello.
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 	Rect titleRect = {0,0,ctx->width, (int)(ctx->height * 0.5)};
 #else
 	Rect titleRect = {0,0,ctx->width, (int)(ctx->height * 0.6)};
@@ -200,7 +200,7 @@ void MainMenuScreen::onInit() {
 	delete[] scoreText;
 	delete[] maxScorePrefix;
 
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 	itemCount = 4;
 #else
 	itemCount = 3;
@@ -210,7 +210,7 @@ void MainMenuScreen::onInit() {
 	int buttonHeight = (ctx->height - titleRect.h) / itemCount;
 	int buttonY = titleRect.h;
 
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 	items[0] = ListItem::create(ctx, lstr(STR_MENU_PLAY), 1, {0, buttonY, ctx->width, buttonHeight}, 3, 1, 3, 1, false);
 	items[1] = ListItem::create(ctx, lstr(STR_MENU_CALIBRATE), 1, {0, buttonY + buttonHeight, ctx->width, buttonHeight}, 0, 2, 0, 2, false);
 	items[2] = ListItem::create(ctx, lstr(STR_MENU_RESET_SCORE), 1, {0, buttonY + buttonHeight * 2, ctx->width, buttonHeight}, 1, 3, 1, 3, false);
@@ -233,7 +233,7 @@ void MainMenuScreen::render() {
 			ctx->game->initScreen(new GameScreen(ctx));
 			break;
 		case 1:
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 			//Si el joystick está habilitado, este botón sirve para calibrarlo
 			ctx->game->initScreen(new CalibrationScreen(ctx));
 #else
@@ -242,7 +242,7 @@ void MainMenuScreen::render() {
 #endif
 			break;
 		case 2:
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 			//Si el joystick está habilitado, este botón resetea la puntuasión máxima
 			ctx->game->initScreen(new DeleteMaxScoreConfirmScreen(ctx));
 			break;
@@ -276,7 +276,7 @@ void MainMenuScreen::render() {
 void MainMenuScreen::onEnd() {}
 
 //CalibrationScreen
-#ifdef USE_JOYSTICK
+#ifdef EXTERN_JOYSTICK
 CalibrationScreen::CalibrationScreen(Context* ctx) : ListScreen(ctx) {}
 void CalibrationScreen::onInit() {
 	ctx->clear({0, 0, 0});
