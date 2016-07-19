@@ -742,7 +742,6 @@ void PauseScreen::render() {
 	this->ListScreen::render();
 	if (ctx->game->input->start){
 		delay(100);
-
 		switch(chosenItem){
 		case 0:
 			if (confirm){
@@ -750,6 +749,9 @@ void PauseScreen::render() {
 			}else{
 				game->resumeGame();
 			}
+#ifdef ARDUINO_AVR_ESPLORA
+			Esplora.writeRGB(0,0,0);
+#endif
 			break;
 		case 1:
 			deleteItems();
@@ -766,7 +768,23 @@ void PauseScreen::render() {
 			break;
 		}
 	}
+#ifdef ARDUINO_AVR_ESPLORA
+	else {
+		if (ledPower >= 1.0f){
+			ledPower = 1.0f;
+			if (ledDir > 0) ledDir = -1;
+		}else if (ledPower <= 0.0f){
+			ledPower = 0.0f;
+			if (ledDir < 0) ledDir = 1;
+		}
+		Esplora.writeRGB(200 * ledPower,50 * ledPower, 0);
+		ledPower += 0.025f * ledDir;
+		delay(10);
+	}
+#else
 	delay(50);
+#endif
+
 }
 
 void PauseScreen::onEnd() {}

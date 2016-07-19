@@ -250,6 +250,8 @@ public:
 	void initScreen(char* title, char* button1, char* button2);
 
 private:
+	float ledPower = 0.0f;
+	char ledDir = 1;
 	GameScreen* game;
 };
 
