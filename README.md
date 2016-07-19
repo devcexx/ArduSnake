@@ -2,7 +2,7 @@
 ArduSnake es la implementación del clásico juego de la serpiente para Arduino, programado en C++. Antes de cargar este Sketch en una placa, es recomendable leer este documento, pues contiene información acerca de como modificar la ubicación los pines y el hardware que utilizará el circuito.
 
 ### Hardware
-Para correr este Sketch, es necesario disponer de una placa Arduino que posea, al menos, 2 KB de SRAM y 32 KB de memoria Flash. Todas las placas de Arduino que cumplan este requisito, **salvo la Arduino Esplora (cuyo soporte se añadirá en un futuro)**, deberían ser capaces de ejecutar sin problemas este Sketch. No obstante, solo ha sido probado en una Arduino UNO y una Arduino MEGA.
+Para correr este Sketch, es necesario disponer de una placa Arduino que posea, al menos, 2 KB de SRAM y 32 KB de memoria Flash. Todas las placas de Arduino que cumplan este requisito, **incluyendo la Arduino Esplora (soporte disponible desde el commit 6bdf7fa)**, deberían ser capaces de ejecutar sin problemas este Sketch. No obstante, solo ha sido probado en una Arduino UNO y una Arduino MEGA.
 
 El programa incluye dos modos de funcionamiento, que puede ser cambiado por el usuario antes de subir el Sketch a la placa: control por joystick o por botones de dirección. Más abajo se mostrará la manera de alternar entre estos dos modos.
 
